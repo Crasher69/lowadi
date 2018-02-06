@@ -355,7 +355,7 @@ function usualProg()
 		console.time('ALL_TIME');
 		setTimeout(start_d1, 400);
 		}
-		setTimeout(function() {location.reload(); },12000);
+		setTimeout(function() {location.reload(); },25000);
 	}
 }
 
