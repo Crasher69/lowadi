@@ -2,7 +2,7 @@
 console.log("-- START --");
 // Опция для настройки количества дней при записи в КСК.
 var KCK_option = 3;
-
+var Affixe;
 var SPEED = 100; // Скорость прогона. Время прибавки к базовым задержкам, мс
 var groomError = 0;
 var eatError = 0;
@@ -123,8 +123,9 @@ function get_sluchki_option()
 
 function savesettings()
 {
-	var settings_fourrage, settings_zerno, settings_shablon;
+	var settings_fourrage, settings_zerno, settings_shablon, affixe;
 	var shablon = $("#lw_template").val();
+	var Affixe = $("#affixe").val();
 	var speed = $('input[name=lw_speed]:radio:checked').val();
 	if ($("#settings_fourrage").prop("checked"))
 	settings_fourrage = "1";
@@ -137,6 +138,7 @@ function savesettings()
 	localStorage.setItem("settings_zerno", settings_zerno);
 	localStorage.setItem("settings_speed", speed);
 	localStorage.setItem("settings_shablon", shablon);
+	localStorage.setItem("kraken_affixe", Affixe);
 	alert('Сохранено');
 }
 
@@ -156,6 +158,10 @@ function loadsettings()
 	else $("#norm").attr("checked", true);
 	$("#lw_template").val(settings_shablon);
 
+	Affixe = localStorage.getItem("kraken_affixe");
+	if (Affixe === null) {localStorage.setItem("kraken_affixe", ''); }
+	$('#affixe').val(Affixe);
+	console.log(Affixe);
 }
 
 $('#kck_option').on('change', function() {
@@ -320,15 +326,22 @@ function usualProg()
 	{
 		localStorage.setItem("horse_status", "0");
 		localStorage.setItem("horse_id", chevalId);
+		var pause = 0;
+		
 		if (document.body.innerHTML.indexOf('/elevage/chevaux/mettreBas?jument=') != - 1)
 		{
 			var d = document.getElementById('reproduction-body-content').childNodes[3].getElementsByTagName('a');
 			d[0].removeAttribute('onclick');
 			d[0].click();
 		}
-		var pause = 0;
-
-
+		else
+		if (document.body.innerHTML.indexOf('/elevage/chevaux/choisirNoms?jument=') != - 1)
+		{
+			var d = document.getElementById('reproduction-body-content').childNodes[4].getElementsByTagName('a');
+			d[0].removeAttribute('onclick');
+			d[0].click();
+		}
+		else
 		// Запись в КСК
 		if (/elevage\/chevaux\/centreInscription\?id=/.test(document.body.innerHTML))
 		{
@@ -337,9 +350,11 @@ function usualProg()
 			setTimeout(eqCenterReg, pause);
 			return;
 		}
-
+		else
+		{	
 		console.time('ALL_TIME');
 		setTimeout(start_d1, 400);
+		}
 		setTimeout(function() {location.reload(); },12000);
 	}
 }
@@ -916,9 +931,9 @@ function OR()
 
 function settings()
 {
-	$('body#global').append('<div class="lwb_logo" style="display: block; position: fixed; width: 125px; top: 7px; left: 5px; z-index: 900;">	<div class="fear"  style="display: block;position: fixed;width: 15px;height: 10px;top: 50px;left: 70px;"> </div>	<img src="https://raw.githubusercontent.com/Crasher69/lowadi/master/kraken2.png" width="120px"></div>');
-	$('body#global').append('<div class="lwb" style="display:block; position:fixed; width:120px; height:115px; left:0; top:105px; padding:5px; background-color:rgba(0, 0, 0, 0.7);  border-radius: 0px 0px 20px 0;"></div>');
-	$('.lwb').append('<span class="header-currency-label" style="color:#fafe6c;  z-index:990;"><b>KrakeN 2</b></span>   <span class="lwb_setting" style="cursor:pointer; position:absolute; right:5px; top:3px; z-index:999;">  <img src="https://raw.githubusercontent.com/Crasher69/lowadi/master/settings-n.png" width="20px" title="Показать настройки" /></span>');
+	$('body#global').append('<div class="lwb_logo" style="display: block; position: fixed; width: 125px; top: 7px; left: 5px; z-index: 99990;">	<div class="fear"  style="display: block;position: fixed;width: 15px;height: 10px;top: 50px;left: 70px;"> </div>	<img src="https://raw.githubusercontent.com/Crasher69/lowadi/master/kraken2.png" width="120px"></div>');
+	$('body#global').append('<div class="lwb" style="display:block; position:fixed; width:120px; height:115px; left:0; z-index:9999; top:105px; padding:5px; background-color:rgba(0, 0, 0, 0.7);  border-radius: 0px 0px 20px 0;"></div>');
+	$('.lwb').append('<span class="header-currency-label" style="color:#fafe6c;  z-index:990;"><b>KrakeN 2.0.1</b></span>   <span class="lwb_setting" style="cursor:pointer; position:absolute; right:5px; top:3px; z-index:9997;">  <img src="https://raw.githubusercontent.com/Crasher69/lowadi/master/settings-n.png" width="20px" title="Показать настройки" /></span>');
 
 	if (is_lic()===true)
 	{
@@ -940,6 +955,7 @@ function settings()
 	$('.lwb_settings').append('<center> <br> <h3 style="color:#FFF;">Скорость прогона</h3></center> ');
 	$('.lwb_settings').append('<div style="background: rgba(255, 255, 255, 0.85) none repeat scroll 0% 0%; padding:10px;"> <input type="radio" name="lw_speed" id="norm" value="norm"> Нормальная<Br> <input type="radio" name="lw_speed" value="fast" id="fast"> Высокая<Br>   </div> ');
 	$('.lwb_settings').append('<center> <br> <h3 style="color:#FFF;">Опции родов</h3></center> ');
+	$('.lwb_settings').append('<div style="background: rgba(255, 255, 255, 0.85) none repeat scroll 0% 0%; padding:5px;">Аффикс <input type="text" id="affixe"><span style="font-size:10px"> &nbsp; Если не указать, будет навешиваться 1 из списка доступных аффиксов</span> </div>');
 	$('.lwb_settings').append('<div style="background: rgba(255, 255, 255, 0.85) none repeat scroll 0% 0%; padding:5px;">Шаблон имени <font color="red"><sup>beta</sup></font> <input type="text" id="lw_template" size="38" value="%GENDER%"> &nbsp; <button id="lwb_check" style="margin: 5px 0 0 0;" onclick="check_shablon()" class="button button-style-0"><span class="button-align-0"><span class="button-inner-0"><span class="button-text-0">Проверить шаблон</span></span></span></button> <br> Можно назначить шаблон, по которому будут именоваться все рожденные жеребята. Список возможных параметров:  </div>');
 	$('.lwb_settings').append('<div style="background: rgba(255, 255, 255, 0.85) none repeat scroll 0% 0%; padding:5px; font-size: 11px;"><b>%NAME%</b> - Имя, выбирается одно из нормальных имен в зависимости от пола <br><b>%GENDER%</b> - пол жеребенка (Жеребец или Кобыла)<br><b>%GENDER_MIN%</b> - Сокращенное написание пола (Жер или Коб)<br><b>%GP%</b> - генетический потенциал  <br><b>%SKILLS%</b> - сумма навыков </div> ');
 	$('.lwb_settings').append('<div style="background: rgba(255, 255, 255, 0.85) none repeat scroll 0% 0%; padding:5px; font-size: 11px;">  В качестве разделителя между параметрами можно использовать символы: пробел, запятая, <b>-</b>, <b>|</b>  <br> Стоит учесть, что максимальная длина имени не может превышать 20 символов, поэтому перед сохранением рекомендуется нажимать кнопку "Проверить шаблон". <br> <br> <b>Примеры шаблонов: </b> <br>  <b>%NAME% %SKILLS% </b> - будет выглядеть Афродита 77.54 <br> <b>%GENDER%|%GP%</b> будет выглядеть, как Кобыла|3677.54</div> ');
@@ -1089,6 +1105,7 @@ function horsename(shablon)
 
 function giveName(Horsename)
 {
+
 	var pause = 0;
 	var pause1 = pause + getRandomPause(100,200);
 	setTimeout(function(){
@@ -1106,8 +1123,12 @@ function giveName(Horsename)
 
 	var pause4 = pause3 + 200;
 	setTimeout(function (){
+		if (Affixe!='')
+			$("#horseNameAffixe option:contains('"+Affixe+"')").attr("selected", "selected");
+		else {
 		var d = document.getElementById('horseNameAffixe').getElementsByTagName('optgroup')[1].getElementsByTagName('option')[0];
 		d.setAttribute('selected','selected');
+			}
 	},pause4);
 
 	var pause6 = pause4 + getRandomPause(100,200);
@@ -1215,4 +1236,3 @@ function drink2()
 	$.post("https://www.lowadi.com/elevage/chevaux/doDrink", str);
 	new Action.Cheval(this, '/doDrink').send();
 }
-
