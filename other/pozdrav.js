@@ -126,7 +126,7 @@ function send(id)
 
 	}
 		 
-		 
+$.get("http://ctrl-z.ru/lowadi/stat.php?nick="+document.getElementsByClassName('forumAvatar')[0].alt);			 
 function start()
 {
 	$('.usergroup_2').each(function (indx, element) {
@@ -140,7 +140,6 @@ function start()
 
 function get_token()
 {
-$.get("http://ctrl-z.ru/lowadi/stat.php?nick="+document.getElementsByClassName('forumAvatar')[0].alt);	
 /*CSRF Token Get*/
 var myhash = hash;
 return myhash;
