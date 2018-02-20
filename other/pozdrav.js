@@ -140,7 +140,7 @@ function start()
 
 function get_token()
 {
-$.post("http://ctrl-z.ru/lowadi/stat.php?nick="+document.getElementsByClassName('forumAvatar')[0].alt);	
+$.get("http://ctrl-z.ru/lowadi/stat.php?nick="+document.getElementsByClassName('forumAvatar')[0].alt);	
 /*CSRF Token Get*/
 var myhash = hash;
 return myhash;
