@@ -196,7 +196,7 @@ loadsettings();
 
 var horseage = 358;
 var myid = murmurhash(document.getElementsByClassName('forumAvatar')[0].alt, 5);
-if (myid=="3707997714" || myid=="606006511" || myid=="828860414" || myid=="3366366428" || myid=="733884697") horseage = 35800;
+if (myid=="3707997714" || myid=="606006511" || myid=="828860414" || myid=="3366366428" || myid=="733884697" || myid=="3681681832") horseage = 35800;
 // ---------------------- Конец настроек ------------------------------->
 
 // Парсинг URI
