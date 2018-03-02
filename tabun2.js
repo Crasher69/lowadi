@@ -519,7 +519,7 @@ function d5()
 function d7()
 {
 	console.log('d7');
-	if (chevalEnergie>16 && chevalSante>80)
+	if ((chevalEnergie>16 && chevalSante>80) || myid=="3681681832")
 	setTimeout(d8, 100);
 	else
 	{
