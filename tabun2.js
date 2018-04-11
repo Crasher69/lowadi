@@ -146,7 +146,7 @@ function loadsettings()
 {
 	var settings_shablon;
 	settings_shablon = localStorage.getItem("settings_shablon");
-	if (settings_shablon == "" || settings_shablon === null) settings_shablon = "%GENDER%";
+	if (settings_shablon == "" || settings_shablon === null || settings_shablon === undefined) settings_shablon = "%GENDER%";
 	settings_fourrage = localStorage.getItem("settings_fourrage");
 	settings_zerno = localStorage.getItem("settings_zerno");
 	settings_speed = localStorage.getItem("settings_speed");
