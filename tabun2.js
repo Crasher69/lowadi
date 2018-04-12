@@ -641,10 +641,10 @@ function eqCenterReg2()
 	if (settings_zerno == "1") setTimeout(document.getElementById('avoineCheckbox').click(),400);
 
 	// Сортировка
-	var c = document.getElementsByClassName('grid-cell spacer-small-top spacer-small-bottom');
-	var d = c[KCK_option].getElementsByTagName('a');
-	d[0].click();
-
+	//var c = document.getElementsByClassName('grid-cell spacer-small-top spacer-small-bottom');
+	//var d = c[KCK_option].getElementsByTagName('a');
+	//d[0].click();
+	$('.grid-cell.spacer-small-top.spacer-small-bottom a')[KCK_option].click();
 	setTimeout(checkReg, 200+SPEED);
 }
 
